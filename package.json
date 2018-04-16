@@ -1,0 +1,127 @@
+{
+  "name": "graph",
+  "version": "1.0.0",
+  "description": "GraphQL API for Requarks projects",
+  "main": "server",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon -V --delay 1",
+    "test": "eslint --ext .js . && jest --forceExit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Requarks/graph.git"
+  },
+  "keywords": [
+    "api",
+    "graphql"
+  ],
+  "author": "Nicolas Giard",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Requarks/graph/issues"
+  },
+  "homepage": "https://github.com/Requarks/graph#readme",
+  "dependencies": {
+    "apollo-engine": "1.0.1",
+    "apollo-server-express": "1.3.2",
+    "auto-load": "3.0.0",
+    "bluebird": "3.5.1",
+    "body-parser": "1.18.2",
+    "bunyan": "1.8.12",
+    "colors": "1.2.1",
+    "compression": "1.7.2",
+    "concat": "1.0.3",
+    "cookie-parser": "1.4.3",
+    "cors": "2.8.4",
+    "cron": "1.3.0",
+    "custom-error-instance": "2.1.1",
+    "dotize": "0.2.0",
+    "express": "4.16.2",
+    "express-brute": "1.0.1",
+    "express-brute-redis": "0.0.1",
+    "express-jwt": "5.3.1",
+    "express-jwt-authz": "1.0.0",
+    "fs-extra": "5.0.0",
+    "graphql": "0.13.1",
+    "graphql-redis-subscriptions": "1.4.0",
+    "graphql-subscriptions": "0.5.8",
+    "graphql-tools": "2.21.0",
+    "i18next": "10.5.0",
+    "i18next-express-middleware": "1.1.1",
+    "i18next-node-fs-backend": "1.0.0",
+    "ioredis": "3.2.2",
+    "js-yaml": "3.11.0",
+    "jsonwebtoken": "8.2.0",
+    "jwks-rsa": "1.2.1",
+    "lodash": "4.17.5",
+    "maxmind": "2.5.0",
+    "moment": "2.21.0",
+    "moment-timezone": "0.5.14",
+    "mongoose": "5.0.11",
+    "node-ipc": "9.1.1",
+    "pug": "2.0.1",
+    "request": "2.85.0",
+    "request-promise": "4.2.2",
+    "semver": "5.5.0",
+    "sequelize": "4.36.0",
+    "serve-favicon": "2.4.5",
+    "subscriptions-transport-ws": "0.9.7",
+    "tar-fs": "1.16.0",
+    "uuid": "3.2.1",
+    "validator": "9.4.1",
+    "yargs": "11.0.0"
+  },
+  "devDependencies": {
+    "eslint": "4.18.2",
+    "eslint-config-standard": "11.0.0",
+    "eslint-plugin-import": "2.9.0",
+    "eslint-plugin-node": "6.0.1",
+    "eslint-plugin-promise": "3.7.0",
+    "eslint-plugin-standard": "3.0.1",
+    "graphql-schema-linter": "0.1.2",
+    "graphql-tag": "2.8.0",
+    "jest": "22.4.2",
+    "jest-junit": "3.6.0",
+    "nodemon": "1.17.2"
+  },
+  "jest": {
+    "bail": true,
+    "testResultsProcessor": "./node_modules/jest-junit",
+    "collectCoverageFrom": [
+      "server/**/*.js"
+    ],
+    "coverageReporters": [
+      "cobertura",
+      "lcov"
+    ],
+    "coverageDirectory": "./test-results/coverage",
+    "globals": {},
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ],
+    "verbose": true
+  },
+  "jest-junit": {
+    "suiteName": "jest test",
+    "output": "./test-results/junit.xml",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}"
+  },
+  "engines": {
+    "node": ">=8.11.0"
+  },
+  "nodemonConfig": {
+    "exec": "node ./server --dev | bunyan -o short",
+    "ext": "js json graphql",
+    "watch": [
+      "server/"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    }
+  }
+}

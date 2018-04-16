@@ -1,0 +1,32 @@
+# ===============================================
+# LOCALIZATION
+# ===============================================
+
+extend type Query {
+  localization: LocalizationQuery
+}
+
+# -----------------------------------------------
+# QUERIES
+# -----------------------------------------------
+
+type LocalizationQuery {
+  locales: [LocalizationLocale]
+}
+
+# -----------------------------------------------
+# MUTATIONS
+# -----------------------------------------------
+
+# -----------------------------------------------
+# TYPES
+# -----------------------------------------------
+
+type LocalizationLocale {
+  code: String!
+  name: String!
+  originalName: String!
+  isRTL: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}

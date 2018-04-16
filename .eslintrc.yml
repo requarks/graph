@@ -1,0 +1,11 @@
+extends:
+  - standard
+env:
+  node: true
+  jest: true
+globals:
+  document: false
+  navigator: false
+  window: false
+parserOptions:
+  ecmaVersion: 2017

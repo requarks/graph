@@ -1,0 +1,38 @@
+api:
+  lokalise:
+    host: https://api.lokalise.co/api
+    projectId: ''
+    key: ''
+
+apollo:
+  engine: ''
+
+base: ./server
+
+cache:
+  ttl: 120 # minutes
+  redisTTL: 86400 # seconds
+
+cors:
+  credentials: true
+  maxAge: 600
+  methods: 'GET,POST'
+  origin: true
+
+cron:
+  hourly: 0 0 * * * *
+  frequent: 0 */5 * * * *
+  execOnInit: true
+
+debug: false
+
+mongo:
+  connectionString: mongodb+srv://localhost/graph
+  db: graph
+
+port: 9000
+
+redis:
+  host: localhost
+  port: 6379
+  db: 0

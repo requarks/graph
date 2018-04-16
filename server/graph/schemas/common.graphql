@@ -1,0 +1,28 @@
+# =================================
+# ROOT
+# =================================
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Query
+type Mutation
+type Subscription
+
+# =================================
+# TYPES
+# =================================
+
+type ResponseResult {
+  succeeded: Boolean!
+  errorCode: Int!
+  slug: String!
+  message: String
+}
+
+type DefaultResponseResult {
+  responseResult: ResponseResult
+}

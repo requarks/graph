@@ -1,2 +1,2 @@
-# graph
-API for Wiki.js installations
+# Requarks Graph
+GraphQL API for Requarks projects

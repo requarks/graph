@@ -1,0 +1,9 @@
+{
+  "rules": [
+    "defined-types-are-used",
+    "deprecations-have-a-reason",
+    "enum-values-sorted-alphabetically",
+    "deprecations-have-a-reason",
+    "types-are-capitalized"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "eslint.autoFixOnSave": true,
+  "eslint.enable": true,
+  "editor.autoIndent": true
+}
