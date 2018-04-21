@@ -83,7 +83,7 @@ if (cluster.isMaster) {
     case 1:
       GR.logger.info('---------------------------------------')
       GR.logger.info(`Worker {scheduler-apis} is initializing...`)
-      // require('./worker-scheduled-apis')
+      require('./worker-scheduled-apis')
       break
   }
 }

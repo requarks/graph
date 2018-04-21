@@ -35,7 +35,7 @@ module.exports = (opts = {}) => {
 
   // Set dynamic configs
 
-  conf.base = path.resolve(process.cwd(), conf.base)
+  conf.base = path.resolve(process.cwd(), 'server')
   conf.dev = global.DEV || opts.dev
   conf.test = global.TEST || opts.test
 

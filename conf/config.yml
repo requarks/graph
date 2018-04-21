@@ -1,4 +1,6 @@
 api:
+  location:
+    host: https://restcountries.eu/rest/v2
   lokalise:
     host: https://api.lokalise.co/api
     projectId: ''
@@ -6,8 +8,6 @@ api:
 
 apollo:
   engine: ''
-
-base: ./server
 
 cache:
   ttl: 120 # minutes
