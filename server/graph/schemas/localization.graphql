@@ -12,6 +12,9 @@ extend type Query {
 
 type LocalizationQuery {
   locales: [LocalizationLocale]
+  strings(
+    code: String!
+  ): [LocalizationString]
 }
 
 # -----------------------------------------------
@@ -25,8 +28,13 @@ type LocalizationQuery {
 type LocalizationLocale {
   code: String!
   name: String!
-  originalName: String!
+  nativeName: String!
   isRTL: Boolean!
   createdAt: Date!
   updatedAt: Date!
+}
+
+type LocalizationString {
+  key: String!
+  value: String!
 }

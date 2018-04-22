@@ -7,20 +7,14 @@ module.exports = {
   /**
    * Get all countries data
    */
-  async getAll () {
+  async getCountries () {
     let countries = await GR.redis.get(`countries`)
-    return _.reject(JSON.parse(countries), c => !c.allowed)
-  },
-  /**
-   * Get all country codes
-   */
-  async getAllCodes () {
-    return _.map(await this.getAll(), 'code')
+    return JSON.parse(countries)
   },
   /**
    * Get country data by country code
    */
-  async getByCode (id) {
+  async getCountryByCode (id) {
     let country = await GR.redis.get(`country:${id}`)
     return country ? JSON.parse(country) : {}
   },
@@ -34,7 +28,10 @@ module.exports = {
       // Fetch all countries
       let countries = await svcLocation.getCountries()
 
-      // Save countries to Redis
+      // Save full countries to Redis
+      await GR.redis.set('countries', JSON.stringify(countries))
+
+      // Save individual countries to Redis
       await GR.redis.mset(_.transform(countries, (result, country, key) => {
         if (country.alpha2Code.length === 2) {
           result[`country:${country.alpha2Code}`] = JSON.stringify(country)

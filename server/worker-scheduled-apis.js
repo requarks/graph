@@ -23,7 +23,8 @@ let jobHourly = new CronJob({
   onTick () {
     return Promise.each([
       () => { return GR.models.location.refreshCountries() },
-      () => { GR.logger.debug('≡ All scheduled [APIs][Hourly] tasks completed.') }
+      () => { return GR.models.localization.refreshLocales() },
+      () => { GR.logger.debug('All scheduled [APIs][Hourly] tasks completed.') }
     ], fn => fn())
   },
   runOnInit: GR.conf.cron.execOnInit,
@@ -33,5 +34,5 @@ let jobHourly = new CronJob({
 
 _.delay(() => {
   jobHourly.start()
-  GR.logger.info('│ Worker {scheduled-apis} state: [ RUNNING ]')
+  GR.logger.info('Worker {scheduled-apis} state: [ RUNNING ]')
 }, 1000)

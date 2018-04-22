@@ -11,6 +11,9 @@ extend type Query {
 # -----------------------------------------------
 
 type LocationQuery {
+  country(
+    code: String!
+  ): LocationCountry
   countries: [LocationCountry]
 }
 
@@ -23,6 +26,20 @@ type LocationQuery {
 # -----------------------------------------------
 
 type LocationCountry {
-  code: String!
+  alpha2Code: String!
+  alpha3Code: String!
   name: String!
+  region: String
+  subregion: String
+  demonym: String
+  timezones: [String]
+  nativeName: String
+  languages: [LocationCountryLanguage]
+}
+
+type LocationCountryLanguage {
+  iso639_1: String
+  iso639_2: String!
+  name: String!
+  nativeName: String
 }

@@ -101,6 +101,10 @@ module.exports = async () => {
     })(req, res, next)
   })
 
+  // GraphiQL
+
+  app.get('/graphiql', graphqlApollo.graphiqlExpress({ endpointURL: '/' }))
+
   // Fallback Index
 
   app.get('/', (req, res, next) => {
