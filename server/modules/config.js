@@ -7,12 +7,10 @@ module.exports = (opts = {}) => {
   const confPaths = {
     base: process.cwd(),
     config: path.join(process.cwd(), 'conf/config.yml'),
-    configLocal: '/conf/config-local.yml'
+    configLocal: path.join(process.cwd(), 'conf/config-local.yml')
   }
 
-  if (global.DEV || opts.dev) {
-    confPaths.configLocal = path.join(process.cwd(), 'conf/config-local.yml')
-  } else if (global.TEST || opts.test) {
+  if (global.TEST || opts.test) {
     confPaths.configLocal = path.join(process.cwd(), 'conf/config-test.yml')
   }
 
