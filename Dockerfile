@@ -3,7 +3,8 @@ LABEL maintainer="requarks.io"
 
 RUN apk update && \
     apk add bash curl git openssh supervisor --no-cache && \
-    mkdir -p /var/graph
+    mkdir -p /var/graph && \
+    mkdir -p /logs
 
 WORKDIR /var/graph
 
