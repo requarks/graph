@@ -38,8 +38,8 @@ module.exports = {
           name: lngInfo.name[0],
           nativeName: lngInfo.nativeName[0],
           isRTL: (lng.rtl === '1'),
-          createdAt: _.chain(strings).sortBy('created_at').head().get('created_at', '').value(),
-          updatedAt: _.chain(strings).sortBy('modified_at').last().get('modified_at', '').value()
+          createdAt: new Date(_.chain(strings).sortBy('created_at').head().get('created_at', '').value()),
+          updatedAt: new Date(_.chain(strings).sortBy('modified_at').last().get('modified_at', '').value())
         })
 
         // Save locale language strings
