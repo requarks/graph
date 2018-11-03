@@ -41,6 +41,11 @@ html(lang='en')
         text-decoration: none;
         font-size: 1.1rem;
       }
+      a + a {
+        border-left: 1px solid #FFF;
+        padding-left: 20px;
+        margin-left: 20px;
+      }
       a:hover, a:active, a:focus {
         color: #81D4FA;
         text-decoration: underline;
@@ -79,6 +84,8 @@ html(lang='en')
       path(fill='#03A9F4', d='M200,74c-19.3,0-34.9-15.6-34.9-34.9c0-19.3,15.6-34.9,34.9-34.9c19.3,0,34.9,15.6,34.9,34.9C234.9,58.4,219.3,74,200,74')
     h1 Requarks Graph
     h2 Open-source GraphQL API for Requarks projects
-    a(href='https://requarks.io', title='Requarks.io') requarks.io
+    .links
+      a(href='https://requarks.io', title='Requarks.io') requarks.io
+      a(href='https://github.com/Requarks/graph', title='GitHub Repository') GitHub
     .build
       span Build #{packageVersion}

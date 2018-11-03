@@ -31,8 +31,11 @@ module.exports = {
       let langs = []
 
       for (let lng of langsResp) {
-        let strings = await svcLokalise.getStrings(lng.iso)
+        if (!countryLanguage.languageCodeExists(lng.iso)) {
+          continue
+        }
         const lngInfo = countryLanguage.getLanguage(lng.iso)
+        let strings = await svcLokalise.getStrings(lng.iso)
         langs.push({
           code: lng.iso,
           name: lngInfo.name[0],
