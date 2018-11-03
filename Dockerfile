@@ -1,4 +1,17 @@
-FROM node:10-alpine AS base
+FROM node:10-alpine AS dependencies
+RUN apk update && \
+    apk add yarn g++ make python --no-cache && \
+    rm -rf /var/cache/apk/* && \
+    mkdir -p /var/graph
+
+WORKDIR /var/graph
+
+COPY ./package.json /var/graph/package.json
+
+RUN yarn --production
+
+# --- Release Image ---
+FROM node:10-alpine AS release
 LABEL maintainer="requarks.io"
 
 RUN apk update && \
@@ -10,9 +23,7 @@ WORKDIR /var/graph
 
 COPY supervisord.conf /etc/supervisord.conf
 COPY . /var/graph
-
-RUN npm set progress=false && npm config set depth 0
-RUN npm install --only=production
+COPY --from=dependencies /var/graph/node_modules ./node_modules
 
 EXPOSE 3000
 
