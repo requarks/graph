@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:10-alpine AS base
 LABEL maintainer="requarks.io"
 
 RUN apk update && \
@@ -10,6 +10,9 @@ WORKDIR /var/graph
 
 COPY supervisord.conf /etc/supervisord.conf
 COPY . /var/graph
+
+RUN npm set progress=false && npm config set depth 0
+RUN npm install --only=production
 
 EXPOSE 3000
 
