@@ -1,0 +1,40 @@
+# ===============================================
+# RELEASES
+# ===============================================
+
+extend type Query {
+  releases: ReleaseQuery
+}
+
+# -----------------------------------------------
+# QUERIES
+# -----------------------------------------------
+
+type ReleaseQuery {
+  checkForUpdates(
+    channel: ReleaseChannel!
+    version: String!
+  ): ReleaseVersion
+}
+
+# -----------------------------------------------
+# MUTATIONS
+# -----------------------------------------------
+
+# -----------------------------------------------
+# TYPES
+# -----------------------------------------------
+
+type ReleaseVersion {
+  channel: ReleaseChannel!
+  version: String!
+  releaseDate: Date!
+  minimumVersionRequired: String!
+  minimumNodeRequired: String!
+}
+
+enum ReleaseChannel {
+  STABLE
+  BETA
+  DEV
+}
