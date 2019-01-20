@@ -13,8 +13,8 @@ module.exports = {
       // TODO
       return {
         channel: 'BETA',
-        version: '2.0.0-beta.1',
-        releaseDate: moment.utc('2019-01-01T01:01:01.000Z'),
+        version: '2.0.0-beta.11',
+        releaseDate: moment.utc('2019-01-20T08:00:00.000Z'),
         minimumVersionRequired: '2.0.0-beta.0',
         minimumNodeRequired: '10.12.0'
       }
