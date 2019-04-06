@@ -10,7 +10,6 @@ const _ = require('lodash')
 
 GR.redis = require('./modules/redis')()
 GR.models = autoload('./server/models')
-GR.ipc = require('./modules/ipc').init('worker-scheduled-apis')
 
 // ----------------------------------------
 // Run tasks

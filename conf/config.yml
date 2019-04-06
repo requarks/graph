@@ -2,12 +2,8 @@ api:
   location:
     host: https://restcountries.eu/rest/v2
   lokalise:
-    host: https://api.lokalise.co/api
-    projectId: ''
+    host: https://api.lokalise.co/api2/projects/PROJECT_ID
     key: ''
-
-apollo:
-  engine: ''
 
 cache:
   ttl: 120 # minutes
@@ -25,10 +21,6 @@ cron:
   execOnInit: true
 
 debug: false
-
-mongo:
-  connectionString: mongodb+srv://localhost/graph
-  db: graph
 
 port: 3000
 

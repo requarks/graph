@@ -7,20 +7,15 @@ module.exports = {
   http: request.defaults({
     baseUrl: GR.conf.api.lokalise.host,
     timeout: 10000,
-    qs: {
-      api_token: GR.conf.api.lokalise.key,
-      id: GR.conf.api.lokalise.projectId
-    },
-    form: {
-      api_token: GR.conf.api.lokalise.key,
-      id: GR.conf.api.lokalise.projectId
+    headers: {
+      'x-api-token': GR.conf.api.lokalise.key
     },
     json: true
   }),
   async getLanguages () {
     try {
       let resp = await this.http.get({
-        url: '/language/list',
+        url: '/languages',
         json: true
       })
       return _.get(resp, 'languages', [])
@@ -30,14 +25,26 @@ module.exports = {
   },
   async getStrings (code) {
     try {
-      let resp = await this.http.post({
-        url: '/string/list',
-        form: {
-          langs: `['${code}']`
+      let resp = await this.http.get({
+        url: '/keys',
+        qs: {
+          include_translations: 1,
+          filter_translation_lang_ids: `${code}`
         },
         json: true
       })
-      return _.get(resp, `strings.${code}`, [])
+      return _.get(resp, `keys`, [])
+    } catch (err) {
+      throw new Error(err.message)
+    }
+  },
+  async getContributors (code) {
+    try {
+      let resp = await this.http.post({
+        url: '/contributors',
+        json: true
+      })
+      return _.get(resp, `contributors`, [])
     } catch (err) {
       throw new Error(err.message)
     }

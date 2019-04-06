@@ -31,25 +31,51 @@ module.exports = {
       let langs = []
 
       for (let lng of langsResp) {
-        if (!countryLanguage.languageCodeExists(lng.iso)) {
-          continue
+        let lngInfo
+        switch (lng.lang_iso) {
+          case 'zh':
+            lngInfo = countryLanguage.getLanguage('zh')
+            lngInfo.name = [lng.lang_name]
+            break
+          case 'zh_TW':
+            lng.lang_iso = 'zh-tw'
+            lngInfo = countryLanguage.getLanguage('zh')
+            lngInfo.name = [lng.lang_name]
+            break
+          default:
+            if (!countryLanguage.languageCodeExists(lng.lang_iso)) {
+              continue
+            }
+            lngInfo = countryLanguage.getLanguage(lng.lang_iso)
+            break
         }
-        const lngInfo = countryLanguage.getLanguage(lng.iso)
-        let strings = await svcLokalise.getStrings(lng.iso)
-        langs.push({
-          code: lng.iso,
-          name: lngInfo.name[0],
-          nativeName: lngInfo.nativeName[0],
-          isRTL: (lng.rtl === '1'),
-          createdAt: new Date(_.chain(strings).sortBy('created_at').head().get('created_at', '').value()),
-          updatedAt: new Date(_.chain(strings).sortBy('modified_at').last().get('modified_at', '').value())
-        })
+        let strings = await svcLokalise.getStrings(lng.lang_id)
+
+        let oldestCreatedAt = '9'
+        let latestModifiedAt = '0'
 
         // Save locale language strings
-        await GR.redis.set(`locale:${lng.iso}`, JSON.stringify(_.map(strings, str => ({
-          key: str.key,
-          value: str.translation
-        }))))
+        await GR.redis.set(`locale:${lng.lang_iso}`, JSON.stringify(_.map(strings, str => {
+          if (str.created_at < oldestCreatedAt) {
+            oldestCreatedAt = str.created_at
+          }
+          if (_.get(str, 'translations[0].modified_at', '0') > latestModifiedAt) {
+            latestModifiedAt = _.get(str, 'translations[0].modified_at', '0')
+          }
+          return {
+            key: str.key_name.web,
+            value: _.get(str, 'translations[0].translation', '???')
+          }
+        })))
+
+        langs.push({
+          code: lng.lang_iso,
+          name: lngInfo.name[0],
+          nativeName: lngInfo.nativeName[0],
+          isRTL: (lng.is_rtl),
+          createdAt: new Date(oldestCreatedAt),
+          updatedAt: new Date(latestModifiedAt)
+        })
       }
 
       // Save list of locales to Redis

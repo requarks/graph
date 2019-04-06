@@ -1,14 +1,12 @@
-const path = require('path')
+const { ApolloServer } = require('apollo-server-express')
 const autoload = require('auto-load')
 const bodyParser = require('body-parser')
 const compression = require('compression')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const express = require('express')
-const graphqlApollo = require('apollo-server-express')
-const { ApolloEngine } = require('apollo-engine')
-const { execute, subscribe } = require('graphql')
-const { SubscriptionServer } = require('subscriptions-transport-ws')
+const http = require('http')
+const path = require('path')
 
 /* global GR */
 
@@ -19,9 +17,6 @@ module.exports = async () => {
 
   GR.package = require('../package.json')
   GR.redis = require('./modules/redis')()
-  // GR.lang = require('./modules/localization').init()
-  GR.ipc = require('./modules/ipc').init('master')
-  // GR.mongo = require('./mongoose').init()
 
   GR.logger.info(`Loading Models...`)
   GR.models = autoload(path.join(GR.conf.base, '/models'))
@@ -30,8 +25,6 @@ module.exports = async () => {
   // ----------------------------------------
   // Load Local Modules
   // ----------------------------------------
-
-  const graphqlSchema = require('./graph')
 
   const mw = autoload(path.join(GR.conf.base, '/middlewares'))
 
@@ -62,18 +55,6 @@ module.exports = async () => {
 
   app.use(cookieParser())
 
-  // Monitor Endpoint
-
-  app.use('/monitor', (req, res, next) => {
-    res.status(200).json({ ok: true })
-  })
-
-  // ----------------------------------------
-  // Localization
-  // ----------------------------------------
-
-  // GR.lang.attachMiddleware(app)
-
   // ----------------------------------------
   // Set view accessible vars
   // ----------------------------------------
@@ -82,34 +63,15 @@ module.exports = async () => {
   app.locals.isDev = GR.conf.dev
 
   // ----------------------------------------
-  // Controllers
+  // Apollo Server (GraphQL)
   // ----------------------------------------
 
-  // GraphQL Endpoints
-
-  app.post('/', (req, res, next) => {
-    graphqlApollo.graphqlExpress({
-      schema: graphqlSchema,
-      context: { req, res },
-      formatError: (err) => {
-        return {
-          message: err.message
-        }
-      },
-      tracing: true,
-      cacheControl: true
-    })(req, res, next)
+  const graphqlSchema = require('./graph')
+  const apolloServer = new ApolloServer({
+    ...graphqlSchema,
+    context: ({ req, res }) => ({ req, res })
   })
-
-  // GraphiQL
-
-  app.get('/graphiql', graphqlApollo.graphiqlExpress({ endpointURL: '/' }))
-
-  // Fallback Index
-
-  app.get('/', (req, res, next) => {
-    res.render('index')
-  })
+  apolloServer.applyMiddleware({ app, path: '/', cors: GR.conf.cors })
 
   // ----------------------------------------
   // Error handling
@@ -133,34 +95,11 @@ module.exports = async () => {
   // Start HTTP server
   // ----------------------------------------
 
-  const engine = new ApolloEngine({
-    apiKey: GR.conf.apollo.engine,
-    logging: {
-      level: 'WARN'
-    },
-    origins: [{
-      supportsBatch: true
-    }]
-  })
-
   GR.logger.info('Starting HTTP server on port ' + GR.conf.port + '...')
-  engine.listen({
-    port: GR.conf.port,
-    expressApp: app,
-    graphqlPaths: ['/']
-  }, () => {
-    GR.logger.info('HTTP server state: [ RUNNING ]')
-
-    const wsServer = new SubscriptionServer({ // eslint-disable-line no-unused-vars
-      execute,
-      subscribe,
-      schema: graphqlSchema
-    }, {
-      server: engine,
-      path: '/subscriptions'
-    })
-  })
-  engine.on('error', (error) => {
+  app.set('port', GR.conf.port)
+  const server = http.createServer(app)
+  server.listen(GR.conf.port, '0.0.0.0')
+  server.on('error', (error) => {
     if (error.syscall !== 'listen') {
       throw error
     }
