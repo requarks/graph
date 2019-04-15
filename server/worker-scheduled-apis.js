@@ -22,6 +22,7 @@ let jobHourly = new CronJob({
   onTick () {
     return Promise.each([
       () => { return GR.models.location.refreshCountries() },
+      () => { return GR.models.sponsors.refreshSponsors() },
       () => { GR.logger.debug('All scheduled [APIs][Hourly] tasks completed.') }
     ], fn => fn())
   },

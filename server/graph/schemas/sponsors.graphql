@@ -1,0 +1,44 @@
+# ===============================================
+# RELEASES
+# ===============================================
+
+extend type Query {
+  sponsors: SponsorQuery
+}
+
+# -----------------------------------------------
+# QUERIES
+# -----------------------------------------------
+
+type SponsorQuery {
+  list(
+    kind: SponsorType!
+  ): [SponsorItem]
+}
+
+# -----------------------------------------------
+# MUTATIONS
+# -----------------------------------------------
+
+# -----------------------------------------------
+# TYPES
+# -----------------------------------------------
+
+type SponsorItem {
+  kind: SponsorType!
+  id: String!
+  source: String!
+  name: String!
+  joined: Date!
+  website: String
+  twitter: String
+  extraInfo: String
+  avatar: String
+}
+
+enum SponsorType {
+  BACKER
+  TRANSLATOR
+  DEVELOPER
+  SPECIAL
+}

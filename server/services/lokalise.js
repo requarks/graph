@@ -29,7 +29,8 @@ module.exports = {
         url: '/keys',
         qs: {
           include_translations: 1,
-          filter_translation_lang_ids: `${code}`
+          filter_translation_lang_ids: `${code}`,
+          limit: 5000
         },
         json: true
       })
