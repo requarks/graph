@@ -2,6 +2,8 @@
 
 const svcPatreon = require('../services/patreon')
 const svcOpenCollective = require('../services/open-collective')
+const svcLokalise = require('../services/lokalise')
+const svcGitHub = require('../services/github')
 const _ = require('lodash')
 const moment = require('moment')
 
@@ -57,8 +59,51 @@ module.exports = {
         })
       })
 
-      // Save list of locales to Redis
+      // Save list of backers to Redis
       await GR.redis.set('sponsors:BACKER', JSON.stringify(_.orderBy(backers, ['amount', 'name'], ['desc', 'asc'])))
+
+      // Fetch from Lokalise
+      const translatorsData = await svcLokalise.getContributors()
+      const translators = translatorsData.map(tr => {
+        let lngs = tr.languages.map(l => l.lang_name).filter(l => l !== 'English')
+        if (lngs.length > 5) { // Is the admin...
+          lngs = ['English', 'French']
+        }
+
+        return {
+          kind: 'TRANSLATOR',
+          id: `lokalise-${tr.user_id}`,
+          source: 'Lokalise',
+          joined: moment(_.get(tr, 'created_at', false), 'YYYY-MM-DD HH:mm:ss').toISOString(),
+          name: tr.fullname,
+          website: null,
+          twitter: null,
+          extraInfo: lngs.join(', '),
+          avatar: null
+        }
+      })
+
+      // Save list of translators to Redis
+      await GR.redis.set('sponsors:TRANSLATOR', JSON.stringify(_.orderBy(translators, ['joined', 'name'], ['asc', 'asc'])))
+
+      // Fetch from GitHub
+      const devsData = await svcGitHub.getContributors()
+      const devs = devsData.map(dev => {
+        return {
+          kind: 'DEVELOPER',
+          id: `github-${dev.id}`,
+          source: 'GitHub',
+          joined: moment().toISOString(),
+          name: dev.login,
+          website: dev.html_url,
+          twitter: null,
+          extraInfo: dev.contributions,
+          avatar: dev.avatar_url
+        }
+      })
+
+      // Save list of developers to Redis
+      await GR.redis.set('sponsors:DEVELOPER', JSON.stringify(_.orderBy(devs, ['extraInfo', 'name'], ['desc', 'asc'])))
 
       return GR.logger.debug('Sponsors fetched: [ OK ]')
     } catch (err) {

@@ -10,6 +10,8 @@ api:
     accessToken: ''
   openCollective:
     host: https://opencollective.com/wikijs/members/all.json
+  github:
+    host: https://api.github.com
 
 cache:
   ttl: 120 # minutes

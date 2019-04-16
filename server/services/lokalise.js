@@ -16,6 +16,9 @@ module.exports = {
     try {
       let resp = await this.http.get({
         url: '/languages',
+        qs: {
+          limit: 5000
+        },
         json: true
       })
       return _.get(resp, 'languages', [])
@@ -41,8 +44,11 @@ module.exports = {
   },
   async getContributors (code) {
     try {
-      let resp = await this.http.post({
+      let resp = await this.http.get({
         url: '/contributors',
+        qs: {
+          limit: 5000
+        },
         json: true
       })
       return _.get(resp, `contributors`, [])
