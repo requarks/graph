@@ -11,7 +11,7 @@ module.exports = {
       return GR.models.release.getLatestMatch(args.channel, args.version)
     },
     async latest (obj, args, context) {
-      return ''
+      return GR.models.release.getLatest(args.channel)
     }
   }
 }

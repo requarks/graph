@@ -1,5 +1,4 @@
 const knex = require('knex')
-const _ = require('lodash')
 
 /* global GR */
 
