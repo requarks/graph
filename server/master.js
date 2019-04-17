@@ -16,6 +16,7 @@ module.exports = async () => {
   // ----------------------------------------
 
   GR.package = require('../package.json')
+  GR.db = require('./modules/db')()
   GR.redis = require('./modules/redis')()
 
   GR.logger.info(`Loading Models...`)

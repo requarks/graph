@@ -1,4 +1,5 @@
 const request = require('request-promise')
+const _ = require('lodash')
 
 /* global GR */
 
@@ -18,6 +19,17 @@ module.exports = {
         url: '/repos/requarks/wiki/contributors',
         json: true
       })
+    } catch (err) {
+      throw new Error(err.message)
+    }
+  },
+  async getStars () {
+    try {
+      const resp = await this.http.get({
+        url: '/repos/requarks/wiki',
+        json: true
+      })
+      return _.get(resp, 'stargazers_count', 4200)
     } catch (err) {
       throw new Error(err.message)
     }

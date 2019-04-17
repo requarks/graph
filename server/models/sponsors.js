@@ -15,6 +15,10 @@ module.exports = {
     let sponsors = await GR.redis.get(`sponsors:${kind}`)
     return sponsors ? JSON.parse(sponsors) : []
   },
+
+  async getGithubStars () {
+    return GR.redis.get(`stars`)
+  },
   /**
    * Refresh all country data from remote source
    */
@@ -104,6 +108,10 @@ module.exports = {
 
       // Save list of developers to Redis
       await GR.redis.set('sponsors:DEVELOPER', JSON.stringify(_.orderBy(devs, ['extraInfo', 'name'], ['desc', 'asc'])))
+
+      // GitHub Stars
+      const ghStars = await svcGitHub.getStars()
+      await GR.redis.set('stars', Math.floor(ghStars / 100) * 100)
 
       return GR.logger.debug('Sponsors fetched: [ OK ]')
     } catch (err) {

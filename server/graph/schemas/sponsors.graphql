@@ -14,6 +14,8 @@ type SponsorQuery {
   list(
     kind: SponsorType!
   ): [SponsorItem]
+
+  githubStars: Int!
 }
 
 # -----------------------------------------------

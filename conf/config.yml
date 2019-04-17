@@ -28,6 +28,14 @@ cron:
   frequent: 0 */5 * * * *
   execOnInit: true
 
+db:
+  host: ''
+  port: 0
+  database: graph
+  user: ''
+  password: ''
+  ssl: true
+
 debug: false
 
 port: 3000

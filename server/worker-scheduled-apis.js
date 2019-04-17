@@ -9,6 +9,7 @@ const _ = require('lodash')
 // ----------------------------------------
 
 GR.redis = require('./modules/redis')()
+GR.db = require('./modules/db')()
 GR.models = autoload('./server/models')
 
 // ----------------------------------------
@@ -23,6 +24,7 @@ let jobHourly = new CronJob({
     return Promise.each([
       () => { return GR.models.location.refreshCountries() },
       () => { return GR.models.sponsors.refreshSponsors() },
+      () => { return GR.models.release.refreshLatestReleases() },
       () => { GR.logger.debug('All scheduled [APIs][Hourly] tasks completed.') }
     ], fn => fn())
   },
