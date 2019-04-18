@@ -4,12 +4,12 @@
 
 schema {
   query: Query
-  # mutation: Mutation
+  mutation: Mutation
   # subscription: Subscription
 }
 
 type Query
-# type Mutation
+type Mutation
 # type Subscription
 
 # =================================

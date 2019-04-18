@@ -1,46 +1,28 @@
 # ===============================================
-# SPONSORS
+# NEWSLETTER
 # ===============================================
 
-extend type Query {
-  sponsors: SponsorQuery
+extend type Mutation {
+  newsletter: NewsletterMutation
 }
 
 # -----------------------------------------------
 # QUERIES
 # -----------------------------------------------
 
-type SponsorQuery {
-  list(
-    kind: SponsorType!
-  ): [SponsorItem]
-
-  githubStars: Int!
-}
-
 # -----------------------------------------------
 # MUTATIONS
 # -----------------------------------------------
 
+type NewsletterMutation {
+  subscribe(
+    email: String!
+    name: String!
+    country: String!
+  ): DefaultResponseResult!
+}
+
+
 # -----------------------------------------------
 # TYPES
 # -----------------------------------------------
-
-type SponsorItem {
-  kind: SponsorType!
-  id: String!
-  source: String!
-  name: String!
-  joined: Date!
-  website: String
-  twitter: String
-  extraInfo: String
-  avatar: String
-}
-
-enum SponsorType {
-  BACKER
-  TRANSLATOR
-  DEVELOPER
-  SPECIAL
-}
