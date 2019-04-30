@@ -11,7 +11,7 @@ module.exports = {
   },
 
   async getLatestMatch (channel, currentVersion) {
-    return GR.db('releases').where('channel', channel).andWhere('minimumVersionRequired', '<=', currentVersion).orderBy('version', 'desc').first()
+    return GR.db('releases').where('channel', channel).andWhere('minimumVersionRequired', '<=', currentVersion).orderBy('releaseDate', 'desc').first()
   },
   /**
    * Refresh versions from DB
@@ -20,8 +20,8 @@ module.exports = {
     GR.logger.debug('Fetching latest release versions...')
 
     try {
-      // Fetch all countries
-      const data = await GR.db.raw('SELECT DISTINCT ON ("channel") * FROM "releases" ORDER BY "channel", "version" DESC')
+      // Fetch all releases
+      const data = await GR.db.raw('SELECT DISTINCT ON ("channel") * FROM "releases" ORDER BY "channel", "releaseDate" DESC')
       const releases = _.get(data, 'rows', [])
       if (releases.length > 0) {
         for (const rel of releases) {
