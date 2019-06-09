@@ -32,23 +32,20 @@ module.exports = {
 
       for (let lng of langsResp) {
         let lngInfo
-        switch (lng.lang_iso) {
-          case 'zh':
-            lngInfo = countryLanguage.getLanguage('zh')
-            lngInfo.name = [lng.lang_name]
-            break
-          case 'zh_TW':
-            lng.lang_iso = 'zh-tw'
-            lngInfo = countryLanguage.getLanguage('zh')
-            lngInfo.name = [lng.lang_name]
-            break
-          default:
-            if (!countryLanguage.languageCodeExists(lng.lang_iso)) {
-              continue
-            }
-            lngInfo = countryLanguage.getLanguage(lng.lang_iso)
-            break
+        let lngIsoSimple = lng.lang_iso
+
+        if (lng.lang_iso.indexOf('_') > 0) {
+          lng.lang_iso = lng.lang_iso.replace('_', '-').toLowerCase()
+          lngIsoSimple = lng.lang_iso.split('-')[0]
         }
+
+        if (!countryLanguage.languageCodeExists(lngIsoSimple)) {
+          continue
+        }
+
+        lngInfo = countryLanguage.getLanguage(lngIsoSimple)
+        lngInfo.name = [lng.lang_name]
+
         let strings = await svcLokalise.getStrings(lng.lang_id)
 
         let oldestCreatedAt = '9'
