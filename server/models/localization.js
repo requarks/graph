@@ -50,6 +50,8 @@ module.exports = {
 
         let oldestCreatedAt = '9'
         let latestModifiedAt = '0'
+        let processed = 0
+        let skipped = 0
 
         // Save locale language strings
         await GR.redis.set(`locale:${lng.lang_iso}`, JSON.stringify(_.map(strings, str => {
@@ -59,9 +61,15 @@ module.exports = {
           if (_.get(str, 'translations[0].modified_at', '0') > latestModifiedAt) {
             latestModifiedAt = _.get(str, 'translations[0].modified_at', '0')
           }
+          const strValue = _.get(str, 'translations[0].translation', '')
+          if (strValue === '') {
+            skipped++
+          } else {
+            processed++
+          }
           return {
             key: str.key_name.web,
-            value: _.get(str, 'translations[0].translation', '???')
+            value: strValue
           }
         })))
 
@@ -71,7 +79,8 @@ module.exports = {
           nativeName: lngInfo.nativeName[0],
           isRTL: (lng.is_rtl),
           createdAt: new Date(oldestCreatedAt),
-          updatedAt: new Date(latestModifiedAt)
+          updatedAt: new Date(latestModifiedAt),
+          availability: Math.round(processed / (processed + skipped) * 100)
         })
       }
 

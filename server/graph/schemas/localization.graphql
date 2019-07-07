@@ -32,6 +32,7 @@ type LocalizationLocale {
   isRTL: Boolean!
   createdAt: Date!
   updatedAt: Date!
+  availability: Int!
 }
 
 type LocalizationString {
