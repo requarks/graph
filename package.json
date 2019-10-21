@@ -39,7 +39,7 @@
     "graphql-rate-limit-directive": "1.0.1",
     "ioredis": "4.9.0",
     "js-yaml": "3.13.1",
-    "knex": "0.16.5",
+    "knex": "0.19.5",
     "lodash": "4.17.11",
     "moment": "2.24.0",
     "pg": "7.10.0",
