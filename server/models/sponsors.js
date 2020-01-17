@@ -70,7 +70,7 @@ module.exports = {
           kind: 'BACKER',
           id: `ghsponsor-${b.id}`,
           source: 'GitHub',
-          amount: b.totalAmountDonated,
+          amount: b.totalAmountDonated * 100,
           joined: moment(b.createdAt).toISOString(),
           name: b.name || b.login,
           website: b.websiteUrl,
@@ -81,7 +81,9 @@ module.exports = {
       })
 
       // Save list of backers to Redis
-      await GR.redis.set('sponsors:BACKER', JSON.stringify(_.orderBy(backers, ['amount', 'name'], ['desc', 'asc'])))
+      await GR.redis.set('sponsors:BACKER', JSON.stringify(_.orderBy(_.filter(backers, b => {
+        return b.name !== 'anonymous' && b.name !== 'incognito'
+      }), ['amount', 'name'], ['desc', 'asc'])))
 
       // Fetch from Lokalise
       const translatorsData = await svcLokalise.getContributors()
