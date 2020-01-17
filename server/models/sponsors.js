@@ -63,6 +63,23 @@ module.exports = {
         })
       })
 
+      // Fetch from GitHub (Sponsors)
+      const ghsponsorsData = await svcGitHub.getSponsors()
+      ghsponsorsData.forEach(b => {
+        backers.push({
+          kind: 'BACKER',
+          id: `ghsponsor-${b.id}`,
+          source: 'GitHub',
+          amount: b.totalAmountDonated,
+          joined: moment(b.createdAt).toISOString(),
+          name: b.name || b.login,
+          website: b.websiteUrl,
+          twitter: null,
+          extraInfo: '',
+          avatar: b.avatarUrl
+        })
+      })
+
       // Save list of backers to Redis
       await GR.redis.set('sponsors:BACKER', JSON.stringify(_.orderBy(backers, ['amount', 'name'], ['desc', 'asc'])))
 
@@ -90,7 +107,7 @@ module.exports = {
       // Save list of translators to Redis
       await GR.redis.set('sponsors:TRANSLATOR', JSON.stringify(_.orderBy(translators, ['joined', 'name'], ['asc', 'asc'])))
 
-      // Fetch from GitHub
+      // Fetch from GitHub (Contributors)
       const devsData = await svcGitHub.getContributors()
       const devs = devsData.map(dev => {
         return {

@@ -1,5 +1,8 @@
 {
   "eslint.autoFixOnSave": true,
   "eslint.enable": true,
-  "editor.autoIndent": true
+  "editor.autoIndent": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

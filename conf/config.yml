@@ -12,6 +12,7 @@ api:
     host: https://opencollective.com/wikijs/members/all.json
   github:
     host: https://api.github.com
+    token: ''
   mailchimp:
     host: https://us20.api.mailchimp.com/3.0
     token: ''
