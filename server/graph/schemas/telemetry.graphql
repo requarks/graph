@@ -1,0 +1,59 @@
+# ===============================================
+# TELEMETRY
+# ===============================================
+
+extend type Mutation {
+  telemetry: TelemetryMutation
+}
+
+# -----------------------------------------------
+# QUERIES
+# -----------------------------------------------
+
+# -----------------------------------------------
+# MUTATIONS
+# -----------------------------------------------
+
+type TelemetryMutation {
+  instance(
+    version: String!
+    platform: TelemetryPlatform!
+    os: String!
+    architecture: TelemetryArchitecture!
+    dbType: TelemetryDBType!
+    dbVersion: String!
+    nodeVersion: String!
+    cpuCores: Int!
+    ramMBytes: Int!
+    clientId: String!
+    event: TelemetryInstanceEvent!
+  ): DefaultResponseResult!
+}
+
+# -----------------------------------------------
+# TYPES
+# -----------------------------------------------
+
+enum TelemetryDBType {
+  POSTGRES
+  MYSQL
+  MARIADB
+  MSSQL
+  SQLITE
+}
+
+enum TelemetryPlatform {
+  WINDOWS
+  MACOS
+  LINUX
+}
+
+enum TelemetryArchitecture {
+  X86
+  X64
+}
+
+enum TelemetryInstanceEvent {
+  INSTALL
+  STARTUP
+}
