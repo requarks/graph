@@ -49,7 +49,10 @@ enum TelemetryPlatform {
 }
 
 enum TelemetryArchitecture {
-  X86
+  ARM
+  ARM64
+  OTHER
+  X32
   X64
 }
 
