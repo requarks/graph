@@ -45,7 +45,8 @@ module.exports = {
       nodeVersion: semver.clean(args.nodeVersion),
       cpuCores: args.cpuCores,
       ramMBytes: args.ramMBytes,
-      event: args.event
+      event: args.event,
+      timestamp: GR.db.fn.now()
     })
   }
 }

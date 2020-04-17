@@ -47,7 +47,7 @@ global.PROD = !(args.dev || args.test)
 // Set Root Object
 // ----------------------------------------
 
-let GR = {
+const GR = {
   IS_MASTER: cluster.isMaster,
   ROOTPATH: process.cwd(),
   SERVERPATH: path.join(process.cwd(), 'server'),
@@ -76,13 +76,13 @@ if (cluster.isMaster) {
   })
 
   cluster.on('exit', (worker, code, signal) => {
-    GR.logger.info(`Worker was terminated.`)
+    GR.logger.info('Worker was terminated.')
   })
 } else {
   switch (cluster.worker.id) {
     case 1:
       GR.logger.info('---------------------------------------')
-      GR.logger.info(`Worker {scheduler-apis} is initializing...`)
+      GR.logger.info('Worker {scheduler-apis} is initializing...')
       require('./worker-scheduled-apis')
       break
   }
