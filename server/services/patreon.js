@@ -16,7 +16,8 @@ module.exports = {
       let resp = await this.http.get({
         url: '/campaigns/2394538/pledges',
         qs: {
-          include: 'patron.null'
+          include: 'patron.null',
+          'page[count]': 1000
         },
         json: true
       })
