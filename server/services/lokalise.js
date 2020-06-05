@@ -7,15 +7,15 @@ module.exports = {
   http: request.defaults({
     baseUrl: GR.conf.api.lokalise.host,
     timeout: 10000,
-    headers: {
-      'x-api-token': GR.conf.api.lokalise.key
-    },
     json: true
   }),
   async getLanguages () {
     try {
-      let resp = await this.http.get({
+      const resp = await this.http.get({
         url: '/languages',
+        headers: {
+          'x-api-token': _.sample(GR.conf.api.lokalise.keys)
+        },
         qs: {
           limit: 5000
         },
@@ -28,8 +28,11 @@ module.exports = {
   },
   async getStrings (code) {
     try {
-      let resp = await this.http.get({
+      const resp = await this.http.get({
         url: '/keys',
+        headers: {
+          'x-api-token': _.sample(GR.conf.api.lokalise.keys)
+        },
         qs: {
           include_translations: 1,
           filter_translation_lang_ids: `${code}`,
@@ -37,21 +40,24 @@ module.exports = {
         },
         json: true
       })
-      return _.get(resp, `keys`, [])
+      return _.get(resp, 'keys', [])
     } catch (err) {
       throw new Error(err.message)
     }
   },
   async getContributors (code) {
     try {
-      let resp = await this.http.get({
+      const resp = await this.http.get({
         url: '/contributors',
+        headers: {
+          'x-api-token': _.sample(GR.conf.api.lokalise.keys)
+        },
         qs: {
           limit: 5000
         },
         json: true
       })
-      return _.get(resp, `contributors`, [])
+      return _.get(resp, 'contributors', [])
     } catch (err) {
       throw new Error(err.message)
     }

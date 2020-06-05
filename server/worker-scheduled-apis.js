@@ -18,7 +18,7 @@ GR.models = autoload('./server/models')
 
 const CronJob = require('cron').CronJob
 
-let jobHourly = new CronJob({
+const jobHourly = new CronJob({
   cronTime: GR.conf.cron.hourly,
   onTick () {
     return Promise.each([
@@ -33,7 +33,7 @@ let jobHourly = new CronJob({
   timeZone: 'America/New_York'
 })
 
-let jobFrequent = new CronJob({
+const jobFrequent = new CronJob({
   cronTime: GR.conf.cron.frequent,
   onTick () {
     return Promise.each([

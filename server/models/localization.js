@@ -9,14 +9,14 @@ module.exports = {
    * Get all locales
    */
   async getLocales () {
-    let locales = await GR.redis.get(`locales`)
+    const locales = await GR.redis.get('locales')
     return JSON.parse(locales)
   },
   /**
    * Get locale data
    */
   async getLocaleStrings (id) {
-    let strings = await GR.redis.get(`locale:${id}`)
+    const strings = await GR.redis.get(`locale:${id}`)
     return strings ? JSON.parse(strings) : []
   },
   /**
@@ -27,11 +27,10 @@ module.exports = {
 
     try {
       // Fetch all locales
-      let langsResp = await svcLokalise.getLanguages()
-      let langs = []
+      const langsResp = await svcLokalise.getLanguages()
+      const langs = []
 
-      for (let lng of langsResp) {
-        let lngInfo
+      for (const lng of langsResp) {
         let lngIsoSimple = lng.lang_iso
 
         if (lng.lang_iso.indexOf('_') > 0) {
@@ -43,10 +42,10 @@ module.exports = {
           continue
         }
 
-        lngInfo = countryLanguage.getLanguage(lngIsoSimple)
+        const lngInfo = countryLanguage.getLanguage(lngIsoSimple)
         lngInfo.name = [lng.lang_name]
 
-        let strings = await svcLokalise.getStrings(lng.lang_id)
+        const strings = await svcLokalise.getStrings(lng.lang_id)
 
         let oldestCreatedAt = '9'
         let latestModifiedAt = '0'

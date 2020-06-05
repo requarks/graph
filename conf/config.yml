@@ -4,6 +4,7 @@ api:
   lokalise:
     host: https://api.lokalise.co/api2/projects/PROJECT_ID
     key: ''
+    keys: []
   patreon:
     host: https://www.patreon.com/api/oauth2/api
     campaignId: ''
