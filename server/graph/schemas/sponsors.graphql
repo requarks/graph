@@ -30,7 +30,7 @@ type SponsorItem {
   kind: SponsorType!
   id: String!
   source: String!
-  name: String!
+  name: String
   joined: Date!
   website: String
   twitter: String
