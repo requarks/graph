@@ -34,6 +34,11 @@ module.exports = {
       throw new Error('Invalid RAM Megabytes Amount')
     }
 
+    await GR.db('telemetry').where({
+      clientId: args.clientId,
+      event: args.event
+    }).del()
+
     return GR.db('telemetry').insert({
       clientId: args.clientId,
       version: semver.clean(args.version),
