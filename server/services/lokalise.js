@@ -28,19 +28,29 @@ module.exports = {
   },
   async getStrings (code) {
     try {
-      const resp = await this.http.get({
-        url: '/keys',
-        headers: {
-          'x-api-token': _.sample(GR.conf.api.lokalise.keys)
-        },
-        qs: {
-          include_translations: 1,
-          filter_translation_lang_ids: `${code}`,
-          limit: 5000
-        },
-        json: true
-      })
-      return _.get(resp, 'keys', [])
+      let hasMoreKeys = false
+      let keysPage = 1
+      const keys = []
+      do {
+        const resp = await this.http.get({
+          url: '/keys',
+          headers: {
+            'x-api-token': _.sample(GR.conf.api.lokalise.keys)
+          },
+          qs: {
+            include_translations: 1,
+            filter_translation_lang_ids: `${code}`,
+            limit: 500,
+            page: keysPage
+          },
+          json: true,
+          resolveWithFullResponse: true
+        })
+        keys.push(...resp.body.keys)
+        hasMoreKeys = parseInt(resp.headers['x-pagination-total-count']) > keys.length
+        keysPage++
+      } while (hasMoreKeys)
+      return keys
     } catch (err) {
       throw new Error(err.message)
     }
