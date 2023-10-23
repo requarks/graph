@@ -2,7 +2,7 @@ api:
   location:
     host: https://restcountries.eu/rest/v2
   lokalise:
-    host: https://api.lokalise.co/api2/projects/PROJECT_ID
+    host: https://api.lokalise.com/api2/projects/PROJECT_ID
     key: ''
     keys: []
   patreon:
